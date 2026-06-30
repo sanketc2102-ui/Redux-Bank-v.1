@@ -1,14 +1,25 @@
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 
-const initialState = {
+const initialAccountState = {
   balance: 0,
   loan: 0,
   loanPurpose: "",
 };
 
-const store = createStore(reducer);
+const initialCustomerState = {
+  fullName: "",
+  nationalId: "",
+  createdAt: "",
+};
 
-function reducer(state = initialState, action) {
+const rootReducer = combineReducers({
+  account: accountReducer,
+  customer: customerReducer,
+});
+
+const store = createStore(rootReducer);
+
+function accountReducer(state = initialAccountState, action) {
   switch (action.type) {
     case "account/deposite":
       return { ...state, balance: state.balance + action.payload };
@@ -35,6 +46,23 @@ function reducer(state = initialState, action) {
   }
 }
 
+function customerReducer(state = initialCustomerState, action) {
+  switch (action.type) {
+    case "customer/create":
+      return {
+        ...state,
+        fullName: action.payload.fullName,
+        nationId: action.payload.nationalId,
+        createdAt: action.payload.createdAt,
+      };
+    case "customer/updateName":
+      return {
+        ...state,
+        fullName: action.payload,
+      };
+  }
+}
+
 function deposite(amount) {
   return { type: "account/deposite", payload: amount };
 }
@@ -50,8 +78,22 @@ function loanPaid() {
   return { type: "account/payloan" };
 }
 
-store.dispatch(deposite(720));
+function createCustomer(fullName, nationId) {
+  return {
+    type: "customer/create",
+    payload: {
+      fullName,
+      nationId,
+      createdAt: new Date().toISOString(),
+    },
+  };
+}
 
-console.log(store.getState());
+function updateCustomerName(name) {
+  return {
+    type: "customer/updateName",
+    payload: name,
+  };
+}
 
 export default store;
