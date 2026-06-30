@@ -35,14 +35,22 @@ function reducer(state = initialState, action) {
   }
 }
 
-store.dispatch({ type: "account/deposite", payload: 500 });
-store.dispatch({ type: "account/withdraw", payload: 250 });
-store.dispatch({
-  type: "account/requestLoan",
-  payload: { amount: 12500, purpose: "to buy new furniture" },
-});
+function deposite(amount) {
+  return { type: "account/deposite", payload: amount };
+}
 
-store.dispatch({ type: "account/payloan" });
+function withdraw(amount) {
+  return { type: "account/withdraw", payload: amount };
+}
+
+function requestLoan(amount, purpose) {
+  return { type: "account/deposite", payload: { amount, purpose } };
+}
+function loanPaid() {
+  return { type: "account/payloan" };
+}
+
+store.dispatch(deposite(720));
 
 console.log(store.getState());
 
