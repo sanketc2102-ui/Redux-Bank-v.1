@@ -18,6 +18,8 @@ function customerReducer(state = initialCustomerState, action) {
         ...state,
         fullName: action.payload,
       };
+    default:
+      return state;
   }
 }
 
