@@ -119,8 +119,6 @@ export function deposite(amount, currency) {
   if (currency === "USD") return { type: "account/deposite", payload: amount };
 
   return async function (dispatch, getState) {
-    dispatch("accounts/currencyConverting");
-
     // API Call
 
     const res = await fetch(
